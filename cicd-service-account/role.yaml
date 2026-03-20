@@ -1,0 +1,24 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: cicd-deployer
+  namespace: team-alpha
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments", "deployments/scale"]
+    verbs: ["get", "list", "watch", "create", "update", "patch"]
+  - apiGroups: [""]
+    resources: ["services", "configmaps"]
+    verbs: ["get", "list", "watch", "create", "update", "patch"]
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["pods", "pods/log"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["batch"]
+    resources: ["jobs"]
+    verbs: ["get", "list", "watch", "create", "delete"]
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["ingresses"]
+    verbs: ["get", "list", "watch", "create", "update", "patch"]

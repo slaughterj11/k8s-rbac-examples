@@ -1,0 +1,35 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: platform-ops
+rules:
+  # Cluster wide read access
+  - apiGroups: [""]
+    resources: ["nodes", "namespaces", "persistentvolumes"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["pods", "pods/log", "services", "events", "endpoints", "configmaps", "persistentvolumeclaims"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources: ["deployments", "replicasets", "statefulsets", "daemonsets"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["batch"]
+    resources: ["jobs", "cronjobs"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["ingresses", "networkpolicies"]
+    verbs: ["get", "list", "watch"]
+  # Write access limited to operational resources
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["create", "update", "patch"]
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["delete"]
+  - apiGroups: [""]
+    resources: ["pods/exec"]
+    verbs: ["create"]
+  # View RBAC (but not modify)
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["roles", "rolebindings", "clusterroles", "clusterrolebindings"]
+    verbs: ["get", "list", "watch"]
